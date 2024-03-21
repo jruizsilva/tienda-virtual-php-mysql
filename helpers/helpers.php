@@ -276,7 +276,7 @@ class EmailSender
     try {
       $this->mailer->addAddress($to);
       $this->mailer->isHTML(true);
-      $this->mailer->Subject = $subject;
+      $this->mailer->Subject = mb_encode_mimeheader($subject, "UTF-8");
       $this->mailer->Body = $body;
 
       return $this->mailer->send();

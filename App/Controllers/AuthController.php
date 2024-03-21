@@ -106,18 +106,19 @@ class AuthController extends Controller
       $passwordRecoveryUrl = base_url() . "/auth/change-password/" . $_POST["email"] . "/$token";
       $model->update($userId, ["token" => $token]);
 
-      $emailData = [
+      $data = [
         "email" => $_POST["email"],
         "fullName" => $fullName,
         "passwordRecoveryUrl" => $passwordRecoveryUrl,
-        "subject" => "Cambiar contraseña - Tienda Virtual",
       ];
 
       ob_start();
-      require_once("../resources/views/templates/email/" . $template . ".php");
+      require_once("../resources/views/templates/email/email_cambioPassword.php");
       $bodyHtml = ob_get_clean();
 
-      $sendEmailRes = $this->emailSender->sendEmail($_POST['email'], "Cambiar contraseña - Tienda Virtual", $bodyHtml);
+      $to = $_POST['email'];
+      $subject = "Cambiar contraseña - Tienda Virtual";
+      $sendEmailRes = $this->emailSender->sendEmail($to, $subject, $bodyHtml);;
       if ($sendEmailRes == false) {
         $model->update($userId, ["token" => null]);
         badRequestResponse("Error al enviar email");
