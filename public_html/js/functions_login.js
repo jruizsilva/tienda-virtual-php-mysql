@@ -2,7 +2,7 @@
 const d = document;
 
 $('.login-content [data-toggle="flip"]').click(function () {
-  $('.login-box').toggleClass('flipped');
+  $(".login-box").toggleClass("flipped");
   return false;
 });
 
@@ -16,65 +16,70 @@ d.addEventListener("DOMContentLoaded", function () {
       const email = d.querySelector("#email").value;
       const password = d.querySelector("#password").value;
 
-      if (email == '' || password == '') {
-        swal('Error', 'Todos los campos son obligatorios', 'error');
+      if (email == "" || password == "") {
+        swal("Error", "Todos los campos son obligatorios", "error");
         return false;
       }
 
       const formData = new FormData(formLogin);
-      axios.post(`${base_url}/auth/login`, formData)
-        .then(res => {
-          console.log(res)
+      axios
+        .post(`${base_url}/auth/login`, formData)
+        .then((res) => {
           if (res.data.success == true) {
             window.location.href = `${base_url}/dashboard`;
           } else {
-            swal('Error', res.data.message, 'error');
-            d.querySelector("#password").value = '';
+            swal("Error", res.data.message, "error");
+            d.querySelector("#password").value = "";
           }
         })
-        .catch(err => {
-          console.log(err)
-          swal('Error', err.response.data.message, 'error');
-        })
-    }
+        .catch((err) => {
+          console.log(err);
+          swal("Error", err.response.data.message, "error");
+        });
+    };
 
     formResetPassword.onsubmit = function (e) {
       e.preventDefault();
 
       const resetPasswordEmail = d.querySelector("#resetPasswordEmail").value;
 
-      if (resetPasswordEmail == '') {
-        swal('Error', 'Ingresa tu correo electronico', 'error');
+      if (resetPasswordEmail == "") {
+        swal("Error", "Ingresa tu correo electronico", "error");
         return false;
       }
 
       const formData = new FormData(formResetPassword);
-      axios.post(`${base_url}/auth/reset-password`, formData)
-        .then(res => {
+      axios
+        .post(`${base_url}/auth/reset-password`, formData)
+        .then((res) => {
+          console.log("res", res);
           if (res.data.success == true) {
-            swal({
-              title: "",
-              text: res.data.message,
-              type: "success",
-              showCancelButton: false,
-              confirmButtonText: "Aceptar",
-              closeOnConfirm: false
-            }, function (isConfirm) {
-              if (isConfirm) {
-                window.location.href = `${base_url}`;
+            swal(
+              {
+                title: "",
+                text: res.data.message,
+                type: "success",
+                showCancelButton: false,
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+              },
+              function (isConfirm) {
+                if (isConfirm) {
+                  window.location.href = `${base_url}`;
+                }
+                d.querySelector("#resetPasswordEmail").value = "";
               }
-              d.querySelector("#resetPasswordEmail").value = '';
-            });
+            );
           } else {
-            swal('Error', res.data.message, 'error');
-            d.querySelector("#resetPasswordEmail").value = '';
+            swal("Error", res.data.message, "error");
+            d.querySelector("#resetPasswordEmail").value = "";
             d.querySelector("#resetPasswordEmail").focus();
           }
         })
-        .catch(err => {
-          console.log(err)
-          swal('Error', err.response.data.message, 'error');
-        })
-    }
+        .catch((err) => {
+          console.log(err);
+          swal("Error", err.response.data.message, "error");
+        });
+    };
   }
-})
+});

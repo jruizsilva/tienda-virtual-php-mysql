@@ -1,4 +1,11 @@
 <?php
+
+//Import PHPMailer classes into the global namespace
+//These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 // Retorna la url del proyecto
 function base_url()
 {
@@ -235,4 +242,46 @@ function sendEmail($data, $template)
   $mensaje = ob_get_clean();
   $send = mail($toEmail, $subject, $mensaje, $de);
   return $send;
+}
+
+class EmailSender
+{
+  private static $instance;
+  private $mailer;
+
+  public function __construct()
+  {
+    $this->mailer = new PHPMailer(true);
+    $this->mailer->SMTPDebug = SMTP::DEBUG_OFF;
+    $this->mailer->isSMTP();
+    $this->mailer->Host = 'smtp.gmail.com';
+    $this->mailer->SMTPAuth = true;
+    $this->mailer->Username = $_ENV['MAILER_USERNAME'];
+    $this->mailer->Password = $_ENV['MAILER_PASS'];
+    $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $this->mailer->Port = 465;
+    $this->mailer->setFrom($_ENV['MAILER_USERNAME']);
+  }
+
+  public static function getInstance()
+  {
+    if (self::$instance === null) {
+      self::$instance = new self();
+    }
+    return self::$instance;
+  }
+
+  public function sendEmail($to, $subject, $body)
+  {
+    try {
+      $this->mailer->addAddress($to);
+      $this->mailer->isHTML(true);
+      $this->mailer->Subject = $subject;
+      $this->mailer->Body = $body;
+
+      return $this->mailer->send();
+    } catch (Exception $e) {
+      internalServerErrorResponse("Error al enviar el correo", $e->getMessage());
+    }
+  }
 }

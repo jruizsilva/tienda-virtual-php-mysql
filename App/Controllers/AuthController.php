@@ -3,13 +3,16 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use EmailSender;
 use Exception;
 
 class AuthController extends Controller
 {
+  private $emailSender;
   public function __construct()
   {
     session_start();
+    $this->emailSender = EmailSender::getInstance();
   }
 
   public function loginView()
@@ -84,7 +87,7 @@ class AuthController extends Controller
 
   public function resetPassword()
   {
-    error_reporting(0);
+    // error_reporting(0);
     validateFields($_POST, "email");
     $_POST['email'] = strtolower($_POST['email']);
     $token = token();
@@ -110,9 +113,13 @@ class AuthController extends Controller
         "subject" => "Cambiar contraseña - Tienda Virtual",
       ];
 
-      $sendEmailRes = sendEmail($emailData, "email_cambioPassword");
-      if (!$sendEmailRes) {
-        $model->update($userId, ["token" => ""]);
+      ob_start();
+      require_once("../resources/views/templates/email/" . $template . ".php");
+      $bodyHtml = ob_get_clean();
+
+      $sendEmailRes = $this->emailSender->sendEmail($_POST['email'], "Cambiar contraseña - Tienda Virtual", $bodyHtml);
+      if ($sendEmailRes == false) {
+        $model->update($userId, ["token" => null]);
         badRequestResponse("Error al enviar email");
       }
       okResponse("Se ha enviado un correo electrónico a tu cuenta para cambiar la contraseña.");
