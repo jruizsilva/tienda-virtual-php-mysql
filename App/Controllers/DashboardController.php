@@ -12,14 +12,15 @@ class DashboardController extends Controller
     }
   }
 
-  public function index()
+  public function dashboardPage()
   {
-    return $this->view('dashboard.index', [
+    $data = [
       'page_id' => 1,
       'page_tag' => "Dashboard - Tienda Virtual",
       'page_title' => "Dashboard - Tienda Virtual",
       'page_name' => "dashboard",
       'page_functions_js' => "functions_dashboard.js",
-    ]);
+    ];
+    return $this->view('pages.dashboardPage', $data);
   }
 }

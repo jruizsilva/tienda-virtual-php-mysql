@@ -15,14 +15,15 @@ class UserController extends Controller
     }
   }
 
-  public function index()
+  public function usersPage()
   {
-    return $this->view('users.index', [
+    $data = [
       'page_tag' => 'Usuarios',
       'page_name' => 'users',
       'page_title' => 'Usuarios <small>Tienda Virtual</small>',
       'page_functions_js' => "functions_users.js"
-    ]);
+    ];
+    return $this->view('pages.usersPage', $data);
   }
 
   public function insert()
@@ -81,7 +82,6 @@ class UserController extends Controller
     } catch (Exception $e) {
       internalServerErrorResponse("Error al obtener usuario", $e->getMessage());
     }
-
   }
 
   public function update()

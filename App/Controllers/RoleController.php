@@ -16,9 +16,9 @@ class RoleController extends Controller
     }
   }
 
-  public function index()
+  public function rolesPage()
   {
-    return $this->view('roles.index', [
+    return $this->view('pages.rolesPage', [
       'page_id' => '3',
       'page_tag' => 'Roles Usuario',
       'page_name' => 'user_roles',
@@ -46,7 +46,6 @@ class RoleController extends Controller
     } catch (Exception $e) {
       internalServerErrorResponse("Error al crear role", $e->getMessage());
     }
-
   }
 
   public function find($id)
@@ -85,7 +84,6 @@ class RoleController extends Controller
     } catch (Exception $e) {
       internalServerErrorResponse("Error al actualizar role", $e->getMessage());
     }
-
   }
 
   public function all()
@@ -112,7 +110,6 @@ class RoleController extends Controller
     } catch (Exception $e) {
       internalServerErrorResponse("Error al obtener roles", $e->getMessage());
     }
-
   }
 
   public function delete($id)
@@ -130,7 +127,6 @@ class RoleController extends Controller
     } catch (Exception $e) {
       internalServerErrorResponse("Error al eliminar role", $e->getMessage());
     }
-
   }
 
   public function allSelectOptions()

@@ -11,9 +11,9 @@ class Controller
 
     $route = str_replace('.', '/', $route);
 
-    if (file_exists("../resources/views/$route.php")) {
+    if (file_exists("../view/$route.php")) {
       ob_start();
-      include "../resources/views/$route.php";
+      include "../view/$route.php";
       $content = ob_get_clean();
 
       return $content;

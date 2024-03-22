@@ -11,29 +11,24 @@ function base_url()
 {
   return BASE_URL;
 }
-// Retorna la url de los assets
-function media()
-{
-  return BASE_URL . "/resources";
-}
 function headerAdmin($data = "")
 {
-  $view_header = '../resources/views/templates/header_admin.php';
+  $view_header = '../view/templates/header_admin.php';
   require_once($view_header);
 }
 function navAdmin($data = "")
 {
-  $view_nav = '../resources/views/templates/nav_admin.php';
+  $view_nav = '../view/templates/nav_admin.php';
   require_once($view_nav);
 }
 function footerAdmin($data = "")
 {
-  $view_footer = '../resources/views/templates/footer_admin.php';
+  $view_footer = '../view/templates/footer_admin.php';
   require_once($view_footer);
 }
 function getModal(string $nameModal, $data)
 {
-  $view_modal = "../resources/views/templates/modals/{$nameModal}.php";
+  $view_modal = "../view/modals/{$nameModal}.php";
   require_once $view_modal;
 }
 // Muestra informacion formateada
@@ -238,7 +233,7 @@ function sendEmail($data, $template)
   $de .= "Content-type: text/html; charset=UTF-8\r\n";
   $de .= "From: {$empresa} <{$remitente}>\r\n";
   ob_start();
-  require_once("../resources/views/templates/email/" . $template . ".php");
+  require_once("../views/email/" . $template . ".php");
   $mensaje = ob_get_clean();
   $send = mail($toEmail, $subject, $mensaje, $de);
   return $send;

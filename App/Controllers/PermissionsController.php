@@ -35,14 +35,20 @@ class PermissionsController extends Controller
       } else {
         for ($i = 0; $i < count($modules); $i++) {
           $permissions = [
-            'r' => $role_permissions[$i]['r'],
-            'w' => $role_permissions[$i]['w'],
-            'u' => $role_permissions[$i]['u'],
-            'd' => $role_permissions[$i]['d'],
+            'r' => 0,
+            'w' => 0,
+            'u' => 0,
+            'd' => 0,
           ];
-          if ($modules[$i]['id'] == $role_permissions[$i]['module_id']) {
-            $modules[$i]['permissions'] = $permissions;
+          if (isset($role_permissions[$i])) {
+            $permissions = [
+              'r' => $role_permissions[$i]['r'],
+              'w' => $role_permissions[$i]['w'],
+              'u' => $role_permissions[$i]['u'],
+              'd' => $role_permissions[$i]['d'],
+            ];
           }
+          $modules[$i]['permissions'] = $permissions;
         }
       }
       $role_permissions = [

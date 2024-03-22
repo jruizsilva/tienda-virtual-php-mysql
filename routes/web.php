@@ -7,13 +7,11 @@ use App\Controllers\RoleController;
 use App\Controllers\UserController;
 use Lib\Route;
 
-use App\Controllers\HomeController;
-
-Route::get('/', [HomeController::class, 'index']);
-Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/', [DashboardController::class, 'dashboardPage']);
+Route::get('/dashboard', [DashboardController::class, 'dashboardPage']);
 
 // Roles
-Route::get('/roles', [RoleController::class, 'index']);
+Route::get('/roles', [RoleController::class, 'rolesPage']);
 Route::get('/roles/all', [RoleController::class, 'all']);
 Route::post('/roles/insert', [RoleController::class, 'insert']);
 Route::post('/roles/update', [RoleController::class, 'update']);
@@ -26,7 +24,7 @@ Route::get('/permissions/all/roles/:id', [PermissionsController::class, 'allByRo
 Route::post('/permissions/update/roles/:id', [PermissionsController::class, 'updateByRoleId']);
 
 // Users
-Route::get('/users', [UserController::class, 'index']);
+Route::get('/users', [UserController::class, 'usersPage']);
 Route::post('/users/insert', [UserController::class, 'insert']);
 Route::get('/users/all', [UserController::class, 'all']);
 Route::get('/users/find/:id', [UserController::class, 'find']);
@@ -34,11 +32,12 @@ Route::post('/users/update', [UserController::class, 'update']);
 Route::post('/users/delete/:id', [UserController::class, 'delete']);
 
 // Auth
-Route::get('/login', [AuthController::class, 'loginView']);
-Route::post('/auth/login', [AuthController::class, 'login']);
+Route::get('/login', [AuthController::class, 'loginPage']);
 Route::get('/auth/logout', [AuthController::class, 'logout']);
+Route::get('/auth/change-password/:email/:token', [AuthController::class, 'changePasswordPage']);
+
+Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/reset-password', [AuthController::class, 'resetPassword']);
-Route::get('/auth/change-password/:email/:token', [AuthController::class, 'changePasswordView']);
 Route::post('/auth/change-password', [AuthController::class, 'changePassword']);
 
 Route::dispatch();

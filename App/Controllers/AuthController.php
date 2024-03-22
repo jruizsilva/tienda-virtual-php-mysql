@@ -15,19 +15,19 @@ class AuthController extends Controller
     $this->emailSender = EmailSender::getInstance();
   }
 
-  public function loginView()
+  public function loginPage()
   {
     if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
       redirect('/dashboard');
     }
-
-    return $this->view('auth.login', [
+    $data = [
       'page_id' => 1,
       'page_tag' => "Login - Tienda Virtual",
       'page_title' => "Tienda Virtual",
       'page_name' => "login",
       'page_functions_js' => "functions_login.js"
-    ]);
+    ];
+    return $this->view('pages.loginPage', $data);
   }
 
   public function login()
@@ -113,7 +113,7 @@ class AuthController extends Controller
       ];
 
       ob_start();
-      require_once("../resources/views/templates/email/email_cambioPassword.php");
+      require_once("../view/email/email_cambioPassword.php");
       $bodyHtml = ob_get_clean();
 
       $to = $_POST['email'];
@@ -129,7 +129,7 @@ class AuthController extends Controller
     }
   }
 
-  public function changePasswordView($email, $token)
+  public function changePasswordPage($email, $token)
   {
     $model = new User;
     try {
@@ -145,7 +145,7 @@ class AuthController extends Controller
       internalServerErrorResponse("Error al cambiar contraseña", $e->getMessage());
     }
 
-    return $this->view('auth.changePassword', [
+    $data = [
       'page_id' => 1,
       'page_tag' => "Cambiar contraseña - Tienda Virtual",
       'page_title' => "Tienda Virtual",
@@ -154,7 +154,8 @@ class AuthController extends Controller
       'id' => $user['id'],
       'email' => $user['email'],
       'token' => $user['token'],
-    ]);
+    ];
+    return $this->view('pages.changePasswordPage', $data);
   }
 
   public function changePassword()
