@@ -27,6 +27,11 @@
       </h1>
     </div>
     <div class="login-box">
+      <div id="divloading">
+        <div>
+          <img src="<?= base_url() . "/img/loading.svg" ?>" alt="loading">
+        </div>
+      </div>
       <form class="login-form" action="" name="formLogin" id="formLogin">
         <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>Iniciar Sesión</h3>
         <div class="form-group">
@@ -55,8 +60,7 @@
           <input class="form-control" id="resetPasswordEmail" name="email" type="email" placeholder="Email">
         </div>
         <div class="form-group btn-container">
-          <button type="submit" class="btn btn-primary btn-block"><i
-              class="fa fa-unlock fa-lg fa-fw"></i>Reiniciar</button>
+          <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-unlock fa-lg fa-fw"></i>Reiniciar</button>
         </div>
         <div class="form-group mt-3">
           <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="fa fa-angle-left fa-fw"></i> Iniciar
@@ -76,7 +80,7 @@
   <script type="text/javascript" src="<?= base_url() . "/js/plugins/sweetalert.min.js" ?>"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
-  const base_url = "<?= base_url() ?>";
+    const base_url = "<?= base_url() ?>";
   </script>
   <script src="<?= base_url() . "/js/" . $data["page_functions_js"] ?>"></script>
 </body>

@@ -99,7 +99,7 @@ class AuthController extends Controller
         ->andWhere("status", "=", "1")
         ->first();
       if (empty($user)) {
-        notFoundResponse("usuario " . $_POST["email"] . " no fue encontrado");
+        notFoundResponse("el correo " . $_POST["email"] . " no esta registrado");
       }
       $userId = $user['id'];
       $fullName = $user['names'] . " " . $user['surname'];

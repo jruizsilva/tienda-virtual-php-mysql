@@ -1,7 +1,9 @@
 const d = document;
 
-if (d.querySelector("#formChangePassword")) {
+d.addEventListener("DOMContentLoaded", function () {
   const formChangePassword = d.querySelector("#formChangePassword");
+  const divloading = d.querySelector("#divloading");
+
   formChangePassword.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -24,6 +26,7 @@ if (d.querySelector("#formChangePassword")) {
       swal("Error", "Las contraseñas no coinciden", "error");
       return;
     }
+    divloading.style.display = "flex";
     const formData = new FormData(formChangePassword);
     axios
       .post(`${base_url}/auth/change-password`, formData)
@@ -49,6 +52,9 @@ if (d.querySelector("#formChangePassword")) {
       .catch((err) => {
         console.log(err);
         swal("Error", err.response.data.message, "error");
+      })
+      .finally(() => {
+        divloading.style.display = "none";
       });
   });
-}
+});

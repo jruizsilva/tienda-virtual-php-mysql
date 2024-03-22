@@ -27,6 +27,11 @@
       </h1>
     </div>
     <div class="login-box flipped">
+      <div id="divloading">
+        <div>
+          <img src="<?= base_url() . "/img/loading.svg" ?>" alt="loading">
+        </div>
+      </div>
       <form id="formChangePassword" action="" name="formChangePassword" class="forget-form">
         <input type="hidden" id="userId" name="id" value="<?php echo $data['id']; ?>" required>
         <input type="hidden" id="email" name="email" value="<?php echo $data['email']; ?>" required>
