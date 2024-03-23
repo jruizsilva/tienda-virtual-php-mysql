@@ -2,6 +2,9 @@
 
 //Import PHPMailer classes into the global namespace
 //These must be at the top of your script, not inside a function
+// TODO cada vez que se cree un role crear los permisos para ese rol
+
+use App\Models\Permission;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -26,9 +29,9 @@ function footerAdmin($data = "")
   $view_footer = '../view/templates/footer_admin.php';
   require_once($view_footer);
 }
-function getModal(string $nameModal, $data)
+function getModal($modalName, $data)
 {
-  $view_modal = "../view/modals/{$nameModal}.php";
+  $view_modal = "../view/modals/{$modalName}.php";
   require_once $view_modal;
 }
 // Muestra informacion formateada
@@ -279,4 +282,17 @@ class EmailSender
       internalServerErrorResponse("Error al enviar el correo", $e->getMessage());
     }
   }
+}
+
+function getPermissions($idModule)
+{
+  $model = new Permission;
+  $roleId = $_SESSION['user']['role_id'];
+  $sql = "SELECT 
+  p.role_id, p.module_id, m.module_name, p.r, p.w, p.u, p.d  
+  FROM permissions p
+  INNER JOIN modules m
+  ON p.module_id = m.id
+  WHERE p.role_id = $roleId";
+  $permissionsModule = $model->all($sql);
 }

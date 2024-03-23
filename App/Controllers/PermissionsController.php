@@ -4,64 +4,48 @@ namespace App\Controllers;
 
 use App\Models\Module;
 use App\Models\Permission;
+use App\Models\Role;
 use Exception;
 
 class PermissionsController extends Controller
 {
-
   public function allByRoleId($roleId)
   {
     validateId($roleId);
-    $model = new Module;
+    $model = new Role;
     try {
-      $modules = $model
-        ->where("status", "!=", "0")
-        ->get();
+      $role = $model->find($roleId);
+      if (empty($role)) {
+        notFoundResponse("El rol no existe");
+      }
+      $model = new Module;
+      $modules = $model->where("status", "=", "1")->get();
+      if (empty($modules)) {
+        notFoundResponse("No se encontraron módulos");
+      }
       $model = new Permission;
-      $role_permissions = $model
-        ->where("role_id", "=", $roleId)
-        ->get();
+      $permissionsRole = $model->where('role_id', '=', $roleId)->get();
+      if (empty($permissionsRole)) {
+        notFoundResponse("No se encontraron permisos");
+      }
 
-      $permissions = [
-        'r' => 0,
-        'w' => 0,
-        'u' => 0,
-        'd' => 0,
-      ];
-      if (empty($role_permissions)) {
-        for ($i = 0; $i < count($modules); $i++) {
-          $modules[$i]['permissions'] = $permissions;
-        }
-      } else {
-        for ($i = 0; $i < count($modules); $i++) {
-          $permissions = [
-            'r' => 0,
-            'w' => 0,
-            'u' => 0,
-            'd' => 0,
-          ];
-          if (isset($role_permissions[$i])) {
-            $permissions = [
-              'r' => $role_permissions[$i]['r'],
-              'w' => $role_permissions[$i]['w'],
-              'u' => $role_permissions[$i]['u'],
-              'd' => $role_permissions[$i]['d'],
-            ];
+      for ($i = 0; $i < count($modules); $i++) {
+        for ($j = 0; $j < count($permissionsRole); $j++) {
+          if ($modules[$i]['id'] == $permissionsRole[$j]['module_id']) {
+            $modules[$i]['permissions'] = $permissionsRole[$i];
           }
-          $modules[$i]['permissions'] = $permissions;
         }
       }
-      $role_permissions = [
-        'id' => $roleId,
-        'modules' => $modules,
-      ];
+      $role['modules'] = $modules;
+
       ob_start();
-      getModal('permissions_modal', $role_permissions);
+      getModal('permissions_modal', $role);
       $permissions_modal = ob_get_clean();
 
       jsonResponse([
         'success' => true,
         'html' => $permissions_modal,
+        'role_permissions' => $role,
       ]);
     } catch (Exception $e) {
       internalServerErrorResponse("Error al obtener permisos del rol", $e->getMessage());

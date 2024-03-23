@@ -1,0 +1,23 @@
+[
+  {
+    "id": "3",
+    "role_name": "Admin",
+    "modules": [
+      {
+        "id": 1,
+        "module_name": "Dashboard",
+        "module_description": "Dashboard",
+        "status": 1,
+        "permissions": {
+          "id": 32,
+          "role_id": 3,
+          "module_id": 1,
+          "r": 1,
+          "w": 1,
+          "u": 0,
+          "d": 0
+        }
+      }
+    ]
+  }
+]
