@@ -284,7 +284,7 @@ class EmailSender
   }
 }
 
-function getPermissions($idModule)
+function getPermissions($id_module)
 {
   $model = new Permission;
   $roleId = $_SESSION['user']['role_id'];
@@ -294,5 +294,23 @@ function getPermissions($idModule)
   INNER JOIN modules m
   ON p.module_id = m.id
   WHERE p.role_id = $roleId";
-  $permissionsModule = $model->all($sql);
+  $result_query = $model->query($sql)->get();
+
+  $permissions = [];
+  for ($i = 0; $i < count($result_query); $i++) {
+    $permissions[$result_query[$i]['module_id']] = $result_query[$i];
+  }
+
+  $permissions_role = [];
+  $permissions_module = [];
+  if (count($permissions) > 0) {
+    $permissions_role = $permissions;
+    $permissions_module = isset($permissions[$id_module]) ? $permissions[$id_module] : [];
+  }
+
+  $_SESSION['permissions'] = $permissions_role;
+  $_SESSION['permissions_module'] = $permissions_module;
+
+
+  return $permissions;
 }

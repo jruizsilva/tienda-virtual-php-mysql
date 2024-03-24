@@ -8,6 +8,16 @@ define('DB_USER', $_ENV['DB_USER']);
 define('DB_PASS', $_ENV['DB_PASS']);
 define('DB_NAME', $_ENV['DB_NAME']);
 
+define('MODULES', [
+  'dashboard' => 1,
+  'usuarios' => 2,
+  'clientes' => 3,
+  'productos' => 4,
+  'pedidos' => 5,
+  'categorias' => 6,
+  'roles' => 7
+]);
+
 // Zona horaria
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 

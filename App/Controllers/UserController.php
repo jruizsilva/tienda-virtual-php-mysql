@@ -13,6 +13,7 @@ class UserController extends Controller
     if (!isset($_SESSION['login']) || empty($_SESSION['login'])) {
       redirect('/login');
     }
+    getPermissions(MODULES['usuarios']);
   }
 
   public function usersPage()

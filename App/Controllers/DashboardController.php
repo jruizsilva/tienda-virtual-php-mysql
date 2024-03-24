@@ -10,6 +10,8 @@ class DashboardController extends Controller
     if (!isset($_SESSION['login']) || empty($_SESSION['login'])) {
       redirect('/login');
     }
+
+    getPermissions(MODULES['dashboard']);
   }
 
   public function dashboardPage()

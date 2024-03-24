@@ -14,6 +14,8 @@ class RoleController extends Controller
     if (!isset($_SESSION['login']) || empty($_SESSION['login'])) {
       redirect('/login');
     }
+    // module id -> 7
+    getPermissions(MODULES['roles']);
   }
 
   public function rolesPage()

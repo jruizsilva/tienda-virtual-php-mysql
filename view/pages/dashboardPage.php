@@ -20,7 +20,10 @@ navAdmin($data);
       <div class="tile">
         <div class="tile-body">Create a beautiful dashboard</div>
 
-        <?php dep($_SESSION['user']) ?>
+        <?php #dep($_SESSION['user']) 
+        ?>
+        <?php dep($_SESSION['permissions']) ?>
+        <?php dep($_SESSION['permissions_module']) ?>
       </div>
     </div>
   </div>
