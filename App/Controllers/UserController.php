@@ -132,17 +132,26 @@ class UserController extends Controller
       $users = $model->query($sql)->get();
 
       for ($i = 0; $i < count($users); $i++) {
+        $btnView = '';
+        $btnEdit = '';
+        $btnDelete = '';
+
         $badge = $users[$i]['status'] == 1 ?
           '<span class="badge badge-success">Activo</span>' :
           '<span class="badge badge-danger">Inactivo</span>';
 
         $users[$i]['status'] = $badge;
         $userId = $users[$i]['id'];
-        $users[$i]['options'] = '<div class="text-center">
-        <button class="btn btn-info btn-sm btnViewUser" onclick=handleButtonViewUser(' . $userId . ') title="Ver"><i class="fas fa-eye"></i></button>
-        <button class="btn btn-primary btn-sm btnEditUser" onclick=handleButtonEditUser(' . $userId . ') title="Editar"><i class="fas fa-pencil-alt"></i></button>
-        <button class="btn btn-danger btn-sm btnDelUser" onclick=handleButtonDeleteUser(' . $userId . ') title="Eliminar"><i class="fas fa-trash-alt"></i></button>
-        </div>';
+        if ($_SESSION['permissions_module']['r'] == 1) {
+          $btnView = '<button class="btn btn-info btn-sm btnViewUser" onclick=handleButtonViewUser(' . $userId . ') title="Ver"><i class="fas fa-eye"></i></button>';
+        }
+        if ($_SESSION['permissions_module']['u'] == 1) {
+          $btnEdit = '<button class="btn btn-primary btn-sm btnEditUser" onclick=handleButtonEditUser(' . $userId . ') title="Editar"><i class="fas fa-pencil-alt"></i></button>';
+        }
+        if ($_SESSION['permissions_module']['d'] == 1) {
+          $btnDelete = '<button class="btn btn-danger btn-sm btnDelUser" onclick=handleButtonDeleteUser(' . $userId . ') title="Eliminar"><i class="fas fa-trash-alt"></i></button>';
+        }
+        $users[$i]['options'] = '<div class="text-center">' . $btnView . ' ' . $btnEdit . ' ' . $btnDelete . ' ' . '</div>';
       }
 
       return jsonResponse($users);

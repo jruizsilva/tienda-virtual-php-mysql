@@ -2,20 +2,22 @@
 headerAdmin($data);
 navAdmin($data);
 ?>
-<?php
-if ($_SESSION['permissions_module']['r'] == 1) { ?>
-  <h1>Tienes permisos</h1>
-  <?php getModal('users_modal', $data); ?>
-  <main class="app-content">
+<main class="app-content">
+  <?php
+  if ($_SESSION['permissions_module']['r'] == 1) { ?>
+    <h1>Tienes permisos</h1>
+    <?php getModal('users_modal', $data); ?>
     <?php dep($_SESSION['permissions_module']) ?>
     <div class="app-title">
       <div>
         <h1>
           <i class="fa fa-user-tag"></i>
           <?= $data['page_title'] ?>
-          <button class="btn btn-primary" type="button" onclick="openModal();">
-            <i class="fa-solid fa-plus"></i> Nuevo
-          </button>
+          <?php if ($_SESSION['permissions_module']['w'] == 1) { ?>
+            <button class="btn btn-primary" type="button" onclick="openModal();">
+              <i class="fa-solid fa-plus"></i> Nuevo
+            </button>
+          <?php } ?>
         </h1>
       </div>
       <ul class="app-breadcrumb breadcrumb">
@@ -54,13 +56,10 @@ if ($_SESSION['permissions_module']['r'] == 1) { ?>
         </div>
       </div>
     </div>
-  </main>
-<?php } else { ?>
-  <main class="app-content">
-    <h1>No tienes permisos</h1>
-  </main>
-<?php
-}
-?>
+  <?php } else { ?>
+    <p>Acceso restringido</p>
+  <?php } ?>
+</main>
+
 
 <?php footerAdmin($data) ?>

@@ -95,17 +95,27 @@ class RoleController extends Controller
       $roles = $model->where("status", "!=", "0")->get();
 
       for ($i = 0; $i < count($roles); $i++) {
+        $btnView = '';
+        $btnEdit = '';
+        $btnDelete = '';
+
         $badge = $roles[$i]['status'] == 1 ?
           '<span class="badge badge-success">Activo</span>' :
           '<span class="badge badge-danger">Inactivo</span>';
 
         $roles[$i]['status'] = $badge;
         $roleId = $roles[$i]['id'];
-        $roles[$i]['options'] = '<div class="text-center">
-      <button class="btn btn-secondary btn-sm btnPermissionsRole" onclick=handleButtonPermissionsRole(' . $roleId . ') title="Permisos"><i class="fas fa-key"></i></button>
-      <button class="btn btn-primary btn-sm btnEditRole" onclick=handleButtonEditRole(' . $roleId . ') title="Editar"><i class="fas fa-pencil-alt"></i></button>
-      <button class="btn btn-danger btn-sm btnDelRole" onclick=handleButtonDeleteRole(' . $roleId . ') title="Eliminar"><i class="fas fa-trash-alt"></i></button>
-      </div>';
+
+        if ($_SESSION['permissions_module']['r'] == 1) {
+          $btnView = '<button class="btn btn-secondary btn-sm btnPermissionsRole" onclick=handleButtonPermissionsRole(' . $roleId . ') title="Permisos"><i class="fas fa-key"></i></button>';
+        }
+        if ($_SESSION['permissions_module']['u'] == 1) {
+          $btnEdit = '<button class="btn btn-primary btn-sm btnEditRole" onclick=handleButtonEditRole(' . $roleId . ') title="Editar"><i class="fas fa-pencil-alt"></i></button>';
+        }
+        if ($_SESSION['permissions_module']['d'] == 1) {
+          $btnDelete = '<button class="btn btn-danger btn-sm btnDelRole" onclick=handleButtonDeleteRole(' . $roleId . ') title="Eliminar"><i class="fas fa-trash-alt"></i></button>';
+        }
+        $roles[$i]['options'] = '<div class="text-center">' . $btnView . ' ' . $btnEdit . ' ' . $btnDelete . ' ' . '</div>';
       }
 
       return $roles;
